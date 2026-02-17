@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>David Menčík — Chess Coach</title>
+    <meta name="description" content="Online chess coaching for adult improvers. David Menčík brings philosophy, structure, and genuine care to help you improve your chess.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="David Menčík — Chess Coach">
+    <meta property="og:description" content="Online chess coaching for adult improvers. Philosophy, structure, and genuine care.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://davidmencik.coach">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="David Menčík — Chess Coach">
+    <meta name="twitter:description" content="Online chess coaching for adult improvers. Philosophy, structure, and genuine care.">
+    <meta name="twitter:site" content="@mencikdavid">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1c1f26;
+            --paper: #f7f6f3;
+            --paper-warm: #efeee9;
+            --accent: #2d6a4f;
+            --accent-light: #52b788;
+            --muted: #5f6368;
+            --muted-light: #9aa0a6;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'DM Sans', system-ui, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 18px; }
+        body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+        /* Nav */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; transition: background 0.4s, box-shadow 0.4s; }
+        nav.scrolled { background: rgba(245, 240, 232, 0.95); backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+        nav .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+        nav .logo span { color: var(--accent); }
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em; transition: color 0.3s; }
+        nav a:hover { color: var(--ink); }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--ink); }
+        .nav-toggle svg { width: 24px; height: 24px; }
+
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 0 4rem; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-text { animation: fadeUp 1s ease-out; }
+        .hero-eyebrow { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .hero-eyebrow::before { content: ''; width: 2rem; height: 1px; background: var(--accent); }
+        .hero h1 { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+        .hero h1 em { font-style: italic; color: var(--accent); }
+        .hero-body { font-size: 1.05rem; color: var(--muted); line-height: 1.8; max-width: 480px; margin-bottom: 2.5rem; }
+        .hero-photo-wrapper { position: relative; animation: fadeUp 1s ease-out 0.2s both; max-width: 420px; }
+        .hero-photo-wrapper::before { content: ''; position: absolute; top: -1rem; right: -1rem; bottom: 1rem; left: 1rem; border: 1px solid var(--accent-light); opacity: 0.3; }
+        .hero-photo { width: 100%; max-width: 420px; aspect-ratio: 1; border-radius: 2px; object-fit: cover; object-position: top; display: block; filter: grayscale(20%) contrast(1.05); background: var(--paper-warm); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 1rem 2.2rem; background: var(--ink); color: var(--paper); text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn:hover { background: var(--accent); transform: translateY(-1px); }
+        .btn svg { width: 16px; height: 16px; }
+
+        /* Sections */
+        section { padding: 6rem 0; }
+        .section-label { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .section-title { font-family: var(--serif); font-size: 2.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.5rem; }
+        .section-body { color: var(--muted); max-width: 620px; line-height: 1.85; font-size: 0.95rem; }
+        .section-body p + p { margin-top: 1rem; }
+        .divider { width: 100%; height: 0; border-top: 1px solid var(--muted-light); opacity: 0.25; }
+
+        /* Stats */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .stat { text-align: center; }
+        .stat-number { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; color: var(--ink); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
+        .about-card { padding: 2.5rem; background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); }
+        .about-card h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin-bottom: 1rem; }
+        .about-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.8; }
+        .about-card .card-icon { width: 2.5rem; height: 2.5rem; margin-bottom: 1.5rem; color: var(--accent); }
+
+        /* Approach */
+        .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .approach-item { padding: 2rem; border-left: 2px solid var(--accent-light); }
+        .approach-number { font-family: var(--serif); font-size: 2rem; color: var(--accent-light); margin-bottom: 0.75rem; }
+        .approach-item h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .approach-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+
+        /* Pull Quote */
+        .pull-quote { font-family: var(--serif); font-size: 1.5rem; font-style: italic; line-height: 1.55; color: var(--ink); max-width: 720px; margin: 0 auto; text-align: center; padding: 2rem; position: relative; }
+        .pull-quote::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 3rem; height: 2px; background: var(--accent); }
+        .pull-quote cite { display: block; font-family: var(--sans); font-style: normal; font-size: 0.78rem; color: var(--muted); margin-top: 1.25rem; letter-spacing: 0.05em; }
+
+        /* Testimonials */
+        .testimonials-section { background: var(--ink); color: var(--paper); padding: 6rem 0; position: relative; overflow: hidden; }
+        .testimonials-section::before { content: '\201C'; position: absolute; top: -2rem; right: 5%; font-family: var(--serif); font-size: 20rem; color: rgba(255,255,255,0.03); pointer-events: none; }
+        .testimonials-section .section-label { color: var(--accent-light); }
+        .testimonials-section .section-title { color: var(--paper); }
+        .testimonial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
+        .testimonial { padding: 2.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+        .testimonial blockquote { font-family: var(--serif); font-size: 1.08rem; font-style: italic; line-height: 1.75; color: rgba(245, 240, 232, 0.85); margin-bottom: 1.5rem; }
+        .testimonial cite { font-family: var(--sans); font-style: normal; font-size: 0.82rem; font-weight: 500; color: var(--accent-light); letter-spacing: 0.03em; }
+        .testimonial cite span { color: rgba(245, 240, 232, 0.4); font-weight: 400; }
+
+        /* Takeaways */
+        .takeaways-section { background: var(--paper-warm); }
+        .takeaway-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .takeaway { padding: 2.5rem 2rem; background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); position: relative; }
+        .takeaway-number { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; color: var(--accent-light); opacity: 0.4; position: absolute; top: 0.75rem; right: 1.25rem; line-height: 1; }
+        .takeaway h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .takeaway p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+
+        /* Endgame Method */
+        .method-path { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 3rem; position: relative; }
+        .method-path::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px; background: var(--accent-light); opacity: 0.3; z-index: 0; }
+        .method-step { padding: 2.5rem 2rem; text-align: center; position: relative; z-index: 1; background: var(--paper); }
+        .method-step .step-badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem; font-weight: 600; color: var(--paper); background: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 1rem; margin-bottom: 1.25rem; }
+        .method-step h4 { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; margin-bottom: 0.4rem; }
+        .method-step .author { font-size: 0.85rem; color: var(--muted); }
+        .method-step .note { font-size: 0.82rem; color: var(--muted-light); font-style: italic; margin-top: 0.75rem; line-height: 1.6; }
+
+        /* Podcast */
+        .podcast-section { background: var(--paper-warm); border-top: 1px solid rgba(0,0,0,0.04); }
+        .podcast-card { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: center; margin-top: 2.5rem; padding: 2.5rem; background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); }
+        .podcast-icon { width: 80px; height: 80px; background: var(--ink); display: flex; align-items: center; justify-content: center; color: var(--accent-light); flex-shrink: 0; }
+        .podcast-icon svg { width: 36px; height: 36px; }
+        .podcast-info h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; margin-bottom: 0.4rem; }
+        .podcast-info .podcast-meta { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.75rem; }
+        .podcast-info p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+        .podcast-info a { color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.85rem; }
+        .podcast-info a:hover { text-decoration: underline; }
+
+        /* Contact */
+        .contact-section { text-align: center; padding: 8rem 0; }
+        .contact-section .section-title { font-size: 3rem; }
+        .contact-section .section-body { max-width: 520px; margin: 0 auto 2.5rem; text-align: center; }
+        .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+        .contact-link { font-size: 0.82rem; font-weight: 500; color: var(--muted); text-decoration: none; letter-spacing: 0.03em; transition: color 0.3s; display: flex; align-items: center; gap: 0.4rem; }
+        .contact-link:hover { color: var(--ink); }
+
+        /* Footer */
+        footer { padding: 2rem 0; text-align: center; font-size: 0.78rem; color: var(--muted-light); border-top: 1px solid rgba(0,0,0,0.06); }
+        footer a { color: var(--muted); text-decoration: none; }
+
+        /* Animations */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(1.5rem); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { opacity: 0; transform: translateY(1.5rem); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero-body { max-width: 100%; }
+            .hero-photo { max-width: 260px; margin: 0 auto; }
+            .hero-eyebrow { justify-content: center; }
+            .hero-photo-wrapper { order: -1; }
+            .about-grid, .testimonial-grid, .approach-grid, .takeaway-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .method-path { grid-template-columns: 1fr; }
+            .method-path::before { display: none; }
+            .podcast-card { grid-template-columns: 1fr; text-align: center; }
+            .podcast-icon { margin: 0 auto; }
+            nav ul { display: none; }
+            nav ul.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(245, 240, 232, 0.98); backdrop-filter: blur(10px); padding: 1rem 2rem 1.5rem; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+            .nav-toggle { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="#" class="logo">David Menčík<span>.</span></a>
+        <button class="nav-toggle" onclick="document.querySelector('nav ul').classList.toggle('open')" aria-label="Toggle menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" /></svg>
+        </button>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#approach">Coaching</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#method">Resources</a></li>
+            <li><a href="#contact">Get in Touch</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <div class="hero-eyebrow">Chess Coach · Bečej, Serbia</div>
+                <h1>A philosopher's approach to <em>chess improvement</em></h1>
+                <p class="hero-body">Online chess coaching for adult improvers who want more than surface-level advice. David brings structured thinking, a philosopher's curiosity, and a genuine personal connection to every student he works with.</p>
+                <a href="#contact" class="btn">Book a Lesson <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" /></svg></a>
+            </div>
+            <div class="hero-photo-wrapper">
+                <img class="hero-photo" src="david.jpg" alt="David Menčík at a chess tournament">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 0 0 4rem;">
+    <div class="container">
+        <div class="stats-row fade-in" style="margin-top: 0;">
+            <div class="stat"><div class="stat-number">~1970</div><div class="stat-label">FIDE Rapid</div></div>
+            <div class="stat"><div class="stat-number">200+</div><div class="stat-label">Students Coached</div></div>
+            <div class="stat"><div class="stat-number">15</div><div class="stat-label">Years Playing</div></div>
+            <div class="stat"><div class="stat-number">5+</div><div class="stat-label">Years Coaching</div></div>
+        </div>
+    </div>
+</section>
+
+<section id="about">
+    <div class="container">
+        <div class="section-label">About David</div>
+        <div class="section-title">Chess player. Philosopher.<br>Coach who gets it.</div>
+        <div class="section-body">
+            <p>David Menčík is a chess coach and active tournament player from Bečej, Serbia. He holds a Master's degree in Philosophy from the University of Belgrade, where he is completing his PhD. He started playing chess at 14, went from scoring 0/7 in his first city championship to winning it three years running, and has been coaching internationally for five years.</p>
+            <p>Philosophy and chess go hand in hand for David. The same deep focus required to read Hegel is what makes a four-hour game analysis stick in your memory for years. His academic training — breaking complex problems into clear parts, questioning assumptions, building understanding from the ground up — is central to how he coaches.</p>
+        </div>
+        <div class="about-grid fade-in">
+            <div class="about-card">
+                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                <h3>The Philosopher's Edge</h3>
+                <p>David's academic life isn't incidental to his coaching — it's central. Philosophy taught him how to learn, how to present complex ideas clearly, and how to have the confidence to challenge received wisdom. He brings that same rigour and structured thinking to the board, whether he's analysing a Botvinnik classic or reviewing your last tournament game.</p>
+            </div>
+            <div class="about-card">
+                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                <h3>A Fellow Improver</h3>
+                <p>David doesn't just teach — he's actively improving alongside his students. He plays regular classical tournaments, travels for events, and works on his own game daily. He knows what it feels like to lose a won position or freeze in time trouble, and that shared experience shapes how he coaches. You're not learning from someone who stopped playing years ago — you're learning from someone who's right there in the trenches with you.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+
+<section id="approach">
+    <div class="container">
+        <div class="section-label">How David Coaches</div>
+        <div class="section-title">Learn by playing through<br>real games together</div>
+        <div class="section-body">
+            <p>A lesson with David feels like sitting across the board from a friend who happens to be very good at chess. You'll warm up with tactics, work through master games and tournament positions, and talk through your own games. It's structured but relaxed — more conversation than lecture, and you'll do most of the thinking.</p>
+        </div>
+        <div class="approach-grid fade-in">
+            <div class="approach-item">
+                <div class="approach-number">01</div>
+                <h3>Find the Moves Yourself</h3>
+                <p>David puts positions on the board and asks you to find the best move. He'll let you calculate, talk through your ideas, and then ask you to refute yourself. It's not about getting it right first time — it's about learning to think through positions the way strong players do.</p>
+            </div>
+            <div class="approach-item">
+                <div class="approach-number">02</div>
+                <h3>Learn from Real Games</h3>
+                <p>You'll study Fischer, Kasparov, and modern grandmasters — but also David's own tournament games, mistakes and all. He'll show you where he blundered, why he made the wrong decision, and what he should have done. It's honest, practical, and the lessons stick because they come from real chess, not textbook exercises.</p>
+            </div>
+            <div class="approach-item">
+                <div class="approach-number">03</div>
+                <h3>Training Between Sessions</h3>
+                <p>David sends annotated games, puzzles, and training material between lessons. He has an enormous library of resources and shares generously. A little work each day — tactics, positions to evaluate, games to study — adds up quickly. The lesson is where it starts; the real improvement happens in between.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 3rem 0 5rem;">
+    <div class="container">
+        <div class="pull-quote fade-in">
+            "Chess is my first love. Philosophy is my biggest love. Together, they go great."
+            <cite>— David Menčík</cite>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section" id="testimonials">
+    <div class="container">
+        <div class="section-label">What Students Say</div>
+        <div class="section-title">Words from the board</div>
+        <div class="testimonial-grid fade-in">
+            <div class="testimonial">
+                <blockquote>"Lessons with David feel like sitting down with a friend who happens to be really good at chess. We warm up with tactics, play through master games, and go over my own tournament disasters. He never lectures — he puts a position on the board and makes me find the move. I've had coaches rated much higher, but none who made me think as hard or laugh as much."</blockquote>
+                <cite>Andrew Rimmer <span>· Student</span></cite>
+            </div>
+            <div class="testimonial">
+                <blockquote>"David is a very accessible person. As a student, I've asked him many a question outside of a lesson. And it wasn't like 'I'm a busy person, why are you bothering me' — it was just 'Hey friend, I'm happy to talk to you.' That's been quite wonderful."</blockquote>
+                <cite>Dr Kevin Scull <span>· Chess Journeys Podcast Host</span></cite>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="takeaways-section" id="takeaways">
+    <div class="container">
+        <div class="section-label">David's Advice for Students</div>
+        <div class="section-title">Three ways to get the most<br>from your coaching</div>
+        <div class="section-body"><p>From David's appearance on the Chess Journeys podcast — his principles for making the student–coach relationship work.</p></div>
+        <div class="takeaway-grid fade-in">
+            <div class="takeaway">
+                <div class="takeaway-number">1</div>
+                <h3>Ask a Lot of Questions</h3>
+                <p>If you're paying for a good coach who cares about you, use the time. A good coach asks if you have questions at the end. A good student turns up with a paper full of bullet points, and the next half hour is where the real learning happens.</p>
+            </div>
+            <div class="takeaway">
+                <div class="takeaway-number">2</div>
+                <h3>Share Your Games</h3>
+                <p>If you played a game that went wrong, send it to your coach — even outside the lesson. A good coach can tell you what went wrong over chat in ten minutes. They can probably see the mistake in ten seconds.</p>
+            </div>
+            <div class="takeaway">
+                <div class="takeaway-number">3</div>
+                <h3>Do the Homework</h3>
+                <p>If your coach doesn't give you homework, that's a problem. Positions to review, candidate moves to find — the lesson gives you maybe 40% of the material. The homework gives you the rest. It's thirty minutes a day. You can manage that.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="method">
+    <div class="container">
+        <div class="section-label">Featured Method</div>
+        <div class="section-title">David's Endgame Path</div>
+        <div class="section-body">
+            <p>David is emphatic: the two things holding most players back are poor endgames and not playing aggressively enough. His endgame curriculum is a clear path from essential theoretical positions through to strategic mastery.</p>
+        </div>
+        <div class="method-path fade-in">
+            <div class="method-step">
+                <div class="step-badge">Foundation</div>
+                <h4>Chess Endings:<br>Essential Knowledge</h4>
+                <p class="author">Yuri Averbakh</p>
+                <p class="note">The real "100 endgames you must know" — concrete positions that win you games immediately.</p>
+            </div>
+            <div class="method-step">
+                <div class="step-badge">Strategy</div>
+                <h4>Endgame Strategy</h4>
+                <p class="author">Mikhail Shereshevsky</p>
+                <p class="note">Ideas over memorisation. Understand the structures, learn the plans.</p>
+            </div>
+            <div class="method-step">
+                <div class="step-badge">Mastery</div>
+                <h4>Mastering Endgame<br>Strategy</h4>
+                <p class="author">Johan Hellsten</p>
+                <p class="note">The advanced course. After this, Dvoretsky's manual — but only the blue sections first.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="podcast-section">
+    <div class="container">
+        <div class="section-label">Listen</div>
+        <div class="section-title">Hear David in conversation</div>
+        <div class="podcast-card fade-in">
+            <div class="podcast-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" /></svg>
+            </div>
+            <div class="podcast-info">
+                <h3>Chess Journeys — Episode 25</h3>
+                <p class="podcast-meta">Hosted by Dr Kevin Scull · December 2021 · 1hr 23min</p>
+                <p>David joins the Chess Journeys podcast to talk about his path from 0/7 to city champion, why philosophy and chess go hand in hand, his coaching methods, strongly-held endgame book opinions, and why you should always play with increment (for your own safety).</p>
+                <br>
+                <a href="https://podcasts.apple.com/au/podcast/ep-25-coach-david-mencik-1850-fide/id1577673957?i=1000546481813" target="_blank">Apple Podcasts</a> · <a href="https://creators.spotify.com/pod/profile/dr-kevin-scull/episodes/Ep--25-Coach-David-Mencik-1850-FIDE-e1ca7gg" target="_blank">Spotify</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section" id="contact">
+    <div class="container">
+        <div class="section-label">Get Started</div>
+        <div class="section-title">Ready to work on<br>your chess?</div>
+        <div class="section-body">
+            <p>David coaches students of all levels online. Drop him a message on Twitter to chat — no commitment, no pressure. He's happy to talk about your goals before you book anything. Bulk lessons are available at a lower per-lesson rate.</p>
+        </div>
+        <a href="https://x.com/mencikdavid" class="btn" target="_blank">Message David on 𝕏 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" /></svg></a>
+        <div class="contact-links">
+            <a href="https://x.com/mencikdavid" class="contact-link" target="_blank">𝕏 @mencikdavid</a>
+            <a href="https://ratings.fide.com/profile/955507" class="contact-link" target="_blank">FIDE Profile</a>
+            <a href="https://lichess.org/fide/955507/Mencik_David" class="contact-link" target="_blank">lichess</a>
+            <a href="https://www.goodreads.com/davidmencik" class="contact-link" target="_blank">Goodreads</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 David Menčík &middot; <a href="https://davidmencik.coach">davidmencik.coach</a></p>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+    document.querySelectorAll('nav ul a').forEach(link => link.addEventListener('click', () => document.querySelector('nav ul').classList.remove('open')));
+    const observer = new IntersectionObserver((entries) => entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }), { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
