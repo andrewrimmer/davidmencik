@@ -11,14 +11,14 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="David Menčík — Chess Coach">
-    <meta property="og:description" content="Online chess coaching for adult improvers. Philosophy, structure, and genuine care.">
+    <meta property="og:description" content="Online chess coaching for adult improvers worldwide. Philosophy, structure, and genuine care.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://davidmencik.coach">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="David Menčík — Chess Coach">
-    <meta name="twitter:description" content="Online chess coaching for adult improvers. Philosophy, structure, and genuine care.">
+    <meta name="twitter:description" content="Online chess coaching for adult improvers worldwide. Philosophy, structure, and genuine care.">
     <meta name="twitter:site" content="@mencikdavid">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,12 +26,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #1c1f26;
-            --paper: #f7f6f3;
-            --paper-warm: #efeee9;
-            --accent: #2d6a4f;
-            --accent-light: #52b788;
-            --muted: #5f6368;
+            --ink: #0d0f12;
+            --ink-light: #1c1f26;
+            --paper: #f5f2ed;
+            --paper-warm: #ebe8e1;
+            --cream: #faf8f5;
+            --accent: #c8973a;
+            --accent-light: #d4a855;
+            --accent-dim: rgba(200, 151, 58, 0.15);
+            --muted: #6b6e73;
             --muted-light: #9aa0a6;
             --serif: 'Cormorant Garamond', Georgia, serif;
             --sans: 'DM Sans', system-ui, sans-serif;
@@ -39,38 +42,74 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; font-size: 18px; }
         body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-        body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+        /* Grain overlay for dark sections */
+        .has-grain { position: relative; }
+        .has-grain::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+        .has-grain > * { position: relative; z-index: 1; }
 
         /* Nav */
         nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; transition: background 0.4s, box-shadow 0.4s; }
-        nav.scrolled { background: rgba(245, 240, 232, 0.95); backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+        nav.scrolled { background: rgba(13, 15, 18, 0.95); backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgba(255,255,255,0.06); }
         nav .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        nav .logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+        nav .logo { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: var(--paper); text-decoration: none; }
         nav .logo span { color: var(--accent); }
         nav ul { list-style: none; display: flex; gap: 2rem; }
-        nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em; transition: color 0.3s; }
-        nav a:hover { color: var(--ink); }
-        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--ink); }
+        nav a { color: rgba(245, 242, 237, 0.6); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em; transition: color 0.3s; }
+        nav a:hover { color: var(--paper); }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--paper); }
         .nav-toggle svg { width: 24px; height: 24px; }
 
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 0 4rem; }
+        /* Hero - dark */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 0 4rem; background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(200, 151, 58, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
         .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         .hero-text { animation: fadeUp 1s ease-out; }
         .hero-eyebrow { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
         .hero-eyebrow::before { content: ''; width: 2rem; height: 1px; background: var(--accent); }
-        .hero h1 { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+        .hero h1 { font-family: var(--serif); font-size: 3.8rem; font-weight: 400; line-height: 1.12; margin-bottom: 1.5rem; color: var(--paper); }
         .hero h1 em { font-style: italic; color: var(--accent); }
-        .hero-body { font-size: 1.05rem; color: var(--muted); line-height: 1.8; max-width: 480px; margin-bottom: 2.5rem; }
-        .hero-photo-wrapper { position: relative; animation: fadeUp 1s ease-out 0.2s both; max-width: 420px; }
-        .hero-photo-wrapper::before { content: ''; position: absolute; top: -1rem; right: -1rem; bottom: 1rem; left: 1rem; border: 1px solid var(--accent-light); opacity: 0.3; }
-        .hero-photo { width: 100%; max-width: 420px; aspect-ratio: 1; border-radius: 2px; object-fit: cover; object-position: top; display: block; filter: grayscale(20%) contrast(1.05); background: var(--paper-warm); }
+        .hero-body { font-size: 1.05rem; color: rgba(245, 242, 237, 0.65); line-height: 1.8; max-width: 480px; margin-bottom: 2.5rem; }
+        .hero-photo-wrapper { position: relative; animation: fadeUp 1s ease-out 0.2s both; display: inline-block; }
+        .hero-photo { width: 420px; max-width: 100%; aspect-ratio: 1; border-radius: 2px; object-fit: cover; object-position: top; display: block; filter: contrast(1.05); background: var(--ink-light); outline: 1px solid var(--accent); outline-offset: 12px; opacity: 0.92; }
+
+        /* Chess decoration removed - was meshing with photo */
+
+        /* Checkerboard divider strip */
+        .chess-border {
+            height: 6px;
+            background-image: repeating-linear-gradient(
+                90deg,
+                var(--accent) 0px, var(--accent) 6px,
+                transparent 6px, transparent 12px
+            );
+            opacity: 0.35;
+        }
 
         /* Buttons */
-        .btn { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 1rem 2.2rem; background: var(--ink); color: var(--paper); text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
-        .btn:hover { background: var(--accent); transform: translateY(-1px); }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 1rem 2.2rem; background: var(--accent); color: var(--ink); text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn:hover { background: var(--accent-light); transform: translateY(-1px); }
         .btn svg { width: 16px; height: 16px; }
+        .btn-dark { background: var(--ink); color: var(--paper); }
+        .btn-dark:hover { background: var(--ink-light); }
 
         /* Sections */
         section { padding: 6rem 0; }
@@ -80,63 +119,79 @@
         .section-body p + p { margin-top: 1rem; }
         .divider { width: 100%; height: 0; border-top: 1px solid var(--muted-light); opacity: 0.25; }
 
-        /* Stats */
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
+        /* Stats - dark bar */
+        .stats-bar { background: var(--ink-light); padding: 3rem 0; position: relative; }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
         .stat { text-align: center; }
-        .stat-number { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; color: var(--ink); line-height: 1; margin-bottom: 0.5rem; }
-        .stat-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+        .stat-number { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245, 242, 237, 0.5); }
 
         /* About */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
-        .about-card { padding: 2.5rem; background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); }
+        .about-card { padding: 2.5rem; background: var(--cream); border: 1px solid rgba(0,0,0,0.06); }
         .about-card h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin-bottom: 1rem; }
         .about-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.8; }
         .about-card .card-icon { width: 2.5rem; height: 2.5rem; margin-bottom: 1.5rem; color: var(--accent); }
 
-        /* Approach */
+        /* Approach - dark section */
+        .approach-section { background: var(--ink); color: var(--paper); padding: 6rem 0; }
+        .approach-section .section-label { color: var(--accent); }
+        .approach-section .section-title { color: var(--paper); }
+        .approach-section .section-body { color: rgba(245, 242, 237, 0.6); }
         .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
-        .approach-item { padding: 2rem; border-left: 2px solid var(--accent-light); }
-        .approach-number { font-family: var(--serif); font-size: 2rem; color: var(--accent-light); margin-bottom: 0.75rem; }
-        .approach-item h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
-        .approach-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+        .approach-item { padding: 2rem; border-left: 2px solid var(--accent); }
+        .approach-number { font-family: var(--serif); font-size: 2rem; color: var(--accent); opacity: 0.6; margin-bottom: 0.75rem; }
+        .approach-item h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--paper); }
+        .approach-item p { font-size: 0.9rem; color: rgba(245, 242, 237, 0.6); line-height: 1.75; }
 
         /* Pull Quote */
-        .pull-quote { font-family: var(--serif); font-size: 1.5rem; font-style: italic; line-height: 1.55; color: var(--ink); max-width: 720px; margin: 0 auto; text-align: center; padding: 2rem; position: relative; }
+        .pull-quote-section { background: var(--paper); position: relative; overflow: hidden; }
+        .pull-quote-section::before {
+            content: '♚';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20rem;
+            color: rgba(0,0,0,0.04);
+            pointer-events: none;
+        }
+        .pull-quote { font-family: var(--serif); font-size: 1.6rem; font-style: italic; line-height: 1.55; color: var(--ink); max-width: 720px; margin: 0 auto; text-align: center; padding: 2rem; position: relative; }
         .pull-quote::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 3rem; height: 2px; background: var(--accent); }
         .pull-quote cite { display: block; font-family: var(--sans); font-style: normal; font-size: 0.78rem; color: var(--muted); margin-top: 1.25rem; letter-spacing: 0.05em; }
 
         /* Testimonials */
         .testimonials-section { background: var(--ink); color: var(--paper); padding: 6rem 0; position: relative; overflow: hidden; }
-        .testimonials-section::before { content: '\201C'; position: absolute; top: -2rem; right: 5%; font-family: var(--serif); font-size: 20rem; color: rgba(255,255,255,0.03); pointer-events: none; }
-        .testimonials-section .section-label { color: var(--accent-light); }
+        .testimonials-section::before { content: '\201C'; position: absolute; top: -2rem; right: 5%; font-family: var(--serif); font-size: 20rem; color: rgba(200, 151, 58, 0.06); pointer-events: none; }
+        .testimonials-section .section-label { color: var(--accent); }
         .testimonials-section .section-title { color: var(--paper); }
         .testimonial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
-        .testimonial { padding: 2.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
-        .testimonial blockquote { font-family: var(--serif); font-size: 1.08rem; font-style: italic; line-height: 1.75; color: rgba(245, 240, 232, 0.85); margin-bottom: 1.5rem; }
-        .testimonial cite { font-family: var(--sans); font-style: normal; font-size: 0.82rem; font-weight: 500; color: var(--accent-light); letter-spacing: 0.03em; }
-        .testimonial cite span { color: rgba(245, 240, 232, 0.4); font-weight: 400; }
+        .testimonial { padding: 2.5rem; border: 1px solid rgba(200, 151, 58, 0.12); background: rgba(255,255,255,0.03); }
+        .testimonial blockquote { font-family: var(--serif); font-size: 1.08rem; font-style: italic; line-height: 1.75; color: rgba(245, 242, 237, 0.85); margin-bottom: 1.5rem; }
+        .testimonial cite { font-family: var(--sans); font-style: normal; font-size: 0.82rem; font-weight: 500; color: var(--accent); letter-spacing: 0.03em; }
+        .testimonial cite span { color: rgba(245, 242, 237, 0.4); font-weight: 400; }
 
         /* Takeaways */
         .takeaways-section { background: var(--paper-warm); }
         .takeaway-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
-        .takeaway { padding: 2.5rem 2rem; background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); position: relative; }
-        .takeaway-number { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; color: var(--accent-light); opacity: 0.4; position: absolute; top: 0.75rem; right: 1.25rem; line-height: 1; }
+        .takeaway { padding: 2.5rem 2rem; background: var(--cream); border: 1px solid rgba(0,0,0,0.05); position: relative; }
+        .takeaway-number { font-family: var(--serif); font-size: 3.5rem; font-weight: 400; color: var(--accent); opacity: 0.25; position: absolute; top: 0.75rem; right: 1.25rem; line-height: 1; }
         .takeaway h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
         .takeaway p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
 
         /* Endgame Method */
         .method-path { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 3rem; position: relative; }
-        .method-path::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px; background: var(--accent-light); opacity: 0.3; z-index: 0; }
+        .method-path::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px; background: var(--accent); opacity: 0.2; z-index: 0; }
         .method-step { padding: 2.5rem 2rem; text-align: center; position: relative; z-index: 1; background: var(--paper); }
-        .method-step .step-badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem; font-weight: 600; color: var(--paper); background: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 1rem; margin-bottom: 1.25rem; }
+        .method-step .step-badge { display: inline-block; font-family: var(--sans); font-size: 0.7rem; font-weight: 600; color: var(--ink); background: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 1rem; margin-bottom: 1.25rem; }
         .method-step h4 { font-family: var(--serif); font-size: 1.2rem; font-weight: 500; margin-bottom: 0.4rem; }
         .method-step .author { font-size: 0.85rem; color: var(--muted); }
         .method-step .note { font-size: 0.82rem; color: var(--muted-light); font-style: italic; margin-top: 0.75rem; line-height: 1.6; }
 
         /* Podcast */
         .podcast-section { background: var(--paper-warm); border-top: 1px solid rgba(0,0,0,0.04); }
-        .podcast-card { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: center; margin-top: 2.5rem; padding: 2.5rem; background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.05); }
-        .podcast-icon { width: 80px; height: 80px; background: var(--ink); display: flex; align-items: center; justify-content: center; color: var(--accent-light); flex-shrink: 0; }
+        .podcast-card { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: center; margin-top: 2.5rem; padding: 2.5rem; background: var(--cream); border: 1px solid rgba(0,0,0,0.05); }
+        .podcast-icon { width: 80px; height: 80px; background: var(--ink); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
         .podcast-icon svg { width: 36px; height: 36px; }
         .podcast-info h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; margin-bottom: 0.4rem; }
         .podcast-info .podcast-meta { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.75rem; }
@@ -145,12 +200,23 @@
         .podcast-info a:hover { text-decoration: underline; }
 
         /* Contact */
-        .contact-section { text-align: center; padding: 8rem 0; }
-        .contact-section .section-title { font-size: 3rem; }
-        .contact-section .section-body { max-width: 520px; margin: 0 auto 2.5rem; text-align: center; }
+        .contact-section { text-align: center; padding: 8rem 0; background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+        .contact-section::before {
+            content: '♔';
+            position: absolute;
+            bottom: -3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16rem;
+            color: rgba(200, 151, 58, 0.08);
+            pointer-events: none;
+        }
+        .contact-section .section-label { color: var(--accent); }
+        .contact-section .section-title { font-size: 3rem; color: var(--paper); }
+        .contact-section .section-body { max-width: 520px; margin: 0 auto 2.5rem; text-align: center; color: rgba(245, 242, 237, 0.6); }
         .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
-        .contact-link { font-size: 0.82rem; font-weight: 500; color: var(--muted); text-decoration: none; letter-spacing: 0.03em; transition: color 0.3s; display: flex; align-items: center; gap: 0.4rem; }
-        .contact-link:hover { color: var(--ink); }
+        .contact-link { font-size: 0.82rem; font-weight: 500; color: rgba(245, 242, 237, 0.5); text-decoration: none; letter-spacing: 0.03em; transition: color 0.3s; display: flex; align-items: center; gap: 0.4rem; }
+        .contact-link:hover { color: var(--paper); }
 
         /* Footer */
         footer { padding: 2rem 0; text-align: center; font-size: 0.78rem; color: var(--muted-light); border-top: 1px solid rgba(0,0,0,0.06); }
@@ -165,11 +231,11 @@
         @media (max-width: 768px) {
             html { font-size: 16px; }
             .hero-grid { grid-template-columns: 1fr; text-align: center; }
-            .hero h1 { font-size: 2.4rem; }
+            .hero h1 { font-size: 2.6rem; }
             .hero-body { max-width: 100%; }
-            .hero-photo { max-width: 260px; margin: 0 auto; }
+            .hero-photo { width: 260px; margin: 0 auto; outline-offset: 8px; }
             .hero-eyebrow { justify-content: center; }
-            .hero-photo-wrapper { order: -1; }
+            .hero-photo-wrapper { order: -1; margin: 0 auto; }
             .about-grid, .testimonial-grid, .approach-grid, .takeaway-grid { grid-template-columns: 1fr; }
             .stats-row { grid-template-columns: repeat(2, 1fr); }
             .method-path { grid-template-columns: 1fr; }
@@ -177,7 +243,7 @@
             .podcast-card { grid-template-columns: 1fr; text-align: center; }
             .podcast-icon { margin: 0 auto; }
             nav ul { display: none; }
-            nav ul.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(245, 240, 232, 0.98); backdrop-filter: blur(10px); padding: 1rem 2rem 1.5rem; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+            nav ul.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(13, 15, 18, 0.98); backdrop-filter: blur(10px); padding: 1rem 2rem 1.5rem; gap: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
             .nav-toggle { display: block; }
         }
     </style>
@@ -200,13 +266,13 @@
     </div>
 </nav>
 
-<section class="hero">
+<section class="hero has-grain">
     <div class="container">
         <div class="hero-grid">
             <div class="hero-text">
-                <div class="hero-eyebrow">Chess Coach · Bečej, Serbia</div>
+                <div class="hero-eyebrow">Online Chess Coach · Students Worldwide</div>
                 <h1>A philosopher's approach to <em>chess improvement</em></h1>
-                <p class="hero-body">Online chess coaching for adult improvers who want more than surface-level advice. David brings structured thinking, a philosopher's curiosity, and a genuine personal connection to every student he works with.</p>
+                <p class="hero-body">Online chess coaching for adult improvers who want more than surface-level advice. Lessons via Google Meet with students across the US, UK, Europe, and beyond. David brings structured thinking, a philosopher's curiosity, and genuine personal connection to every lesson.</p>
                 <a href="#contact" class="btn">Book a Lesson <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" /></svg></a>
             </div>
             <div class="hero-photo-wrapper">
@@ -216,9 +282,9 @@
     </div>
 </section>
 
-<section style="padding: 0 0 4rem;">
+<section class="stats-bar has-grain">
     <div class="container">
-        <div class="stats-row fade-in" style="margin-top: 0;">
+        <div class="stats-row fade-in">
             <div class="stat"><div class="stat-number">~1970</div><div class="stat-label">FIDE Rapid</div></div>
             <div class="stat"><div class="stat-number">200+</div><div class="stat-label">Students Coached</div></div>
             <div class="stat"><div class="stat-number">15</div><div class="stat-label">Years Playing</div></div>
@@ -227,22 +293,24 @@
     </div>
 </section>
 
+<div class="chess-border"></div>
+
 <section id="about">
     <div class="container">
         <div class="section-label">About David</div>
         <div class="section-title">Chess player. Philosopher.<br>Coach who gets it.</div>
         <div class="section-body">
-            <p>David Menčík is a chess coach and active tournament player from Bečej, Serbia. He holds a Master's degree in Philosophy from the University of Belgrade, where he is completing his PhD. He started playing chess at 14, went from scoring 0/7 in his first city championship to winning it three years running, and has been coaching internationally for five years.</p>
+            <p>David Menčík is an online chess coach and active tournament player originally from Bečej, Serbia. He coaches students across the US, UK, Ireland, Japan and beyond via Google Meet. He holds a Master's degree in Philosophy from the University of Belgrade, where he is completing his PhD. He started playing chess at 14, went from scoring 0/7 in his first city championship to winning it three years running, and has been coaching internationally for five years.</p>
             <p>Philosophy and chess go hand in hand for David. The same deep focus required to read Hegel is what makes a four-hour game analysis stick in your memory for years. His academic training — breaking complex problems into clear parts, questioning assumptions, building understanding from the ground up — is central to how he coaches.</p>
         </div>
         <div class="about-grid fade-in">
             <div class="about-card">
-                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                <div class="card-icon" style="font-size: 2.2rem; color: var(--accent); margin-bottom: 1.5rem; line-height: 1;">♞</div>
                 <h3>The Philosopher's Edge</h3>
                 <p>David's academic life isn't incidental to his coaching — it's central. Philosophy taught him how to learn, how to present complex ideas clearly, and how to have the confidence to challenge received wisdom. He brings that same rigour and structured thinking to the board, whether he's analysing a Botvinnik classic or reviewing your last tournament game.</p>
             </div>
             <div class="about-card">
-                <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                <div class="card-icon" style="font-size: 2.2rem; color: var(--accent); margin-bottom: 1.5rem; line-height: 1;">♟</div>
                 <h3>A Fellow Improver</h3>
                 <p>David doesn't just teach — he's actively improving alongside his students. He plays regular classical tournaments, travels for events, and works on his own game daily. He knows what it feels like to lose a won position or freeze in time trouble, and that shared experience shapes how he coaches. You're not learning from someone who stopped playing years ago — you're learning from someone who's right there in the trenches with you.</p>
             </div>
@@ -250,9 +318,9 @@
     </div>
 </section>
 
-<div class="container"><div class="divider"></div></div>
+<div class="chess-border"></div>
 
-<section id="approach">
+<section class="approach-section has-grain" id="approach">
     <div class="container">
         <div class="section-label">How David Coaches</div>
         <div class="section-title">Learn by playing through<br>real games together</div>
@@ -279,22 +347,26 @@
     </div>
 </section>
 
-<section style="padding: 3rem 0 5rem;">
+<div class="chess-border"></div>
+
+<section class="pull-quote-section" style="padding: 4rem 0 5rem;">
     <div class="container">
         <div class="pull-quote fade-in">
-            "Chess is my first love. Philosophy is my biggest love. Together, they go great."
+            "Chess is my first love. Philosophy is my greatest love.<br>They've always made sense together."
             <cite>— David Menčík</cite>
         </div>
     </div>
 </section>
 
-<section class="testimonials-section" id="testimonials">
+<div class="chess-border"></div>
+
+<section class="testimonials-section has-grain" id="testimonials">
     <div class="container">
         <div class="section-label">What Students Say</div>
         <div class="section-title">Words from the board</div>
         <div class="testimonial-grid fade-in">
             <div class="testimonial">
-                <blockquote>"Lessons with David feel like sitting down with a friend who happens to be really good at chess. We warm up with tactics, play through master games, and go over my own tournament disasters. He never lectures — he puts a position on the board and makes me find the move. I've had coaches rated much higher, but none who made me think as hard or laugh as much."</blockquote>
+                <blockquote>"David is an excellent coach — and someone I'm glad to call a friend. What really stands out is how he handles calculation work. He doesn't rush in to rescue you. He doesn't fill the silence. He lets you sit with the position and actually think. If you're close, he might give you just enough to keep you on track — but if he knows you can work it out, he makes you earn it. That balance is rare. You never feel lost, but you're never spoon-fed either. I come out of our lessons having genuinely learned something — and feeling like I've had a proper mental workout."</blockquote>
                 <cite>Andrew Rimmer <span>· Student</span></cite>
             </div>
             <div class="testimonial">
@@ -379,12 +451,14 @@
     </div>
 </section>
 
-<section class="contact-section" id="contact">
+<div class="chess-border"></div>
+
+<section class="contact-section has-grain" id="contact">
     <div class="container">
         <div class="section-label">Get Started</div>
         <div class="section-title">Ready to work on<br>your chess?</div>
         <div class="section-body">
-            <p>David coaches students of all levels online. Drop him a message on Twitter to chat — no commitment, no pressure. He's happy to talk about your goals before you book anything. Bulk lessons are available at a lower per-lesson rate.</p>
+            <p>David coaches students of all levels online via Google Meet. Drop him a message on Twitter to chat — no commitment, no pressure. He's happy to talk about your goals before you book anything. Bulk lessons are available at a lower per-lesson rate.</p>
         </div>
         <a href="https://x.com/mencikdavid" class="btn" target="_blank">Message David on 𝕏 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" /></svg></a>
         <div class="contact-links">
