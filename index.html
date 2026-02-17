@@ -214,7 +214,20 @@
         .contact-section .section-label { color: var(--accent); }
         .contact-section .section-title { font-size: 3rem; color: var(--paper); }
         .contact-section .section-body { max-width: 520px; margin: 0 auto 2.5rem; text-align: center; color: rgba(245, 242, 237, 0.6); }
-        .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+        .contact-form { max-width: 480px; margin: 0 auto 2.5rem; text-align: left; }
+        .contact-form .form-group { margin-bottom: 1.25rem; }
+        .contact-form label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245, 242, 237, 0.5); margin-bottom: 0.5rem; }
+        .contact-form input,
+        .contact-form textarea { width: 100%; padding: 0.9rem 1rem; font-family: var(--sans); font-size: 0.92rem; color: var(--paper); background: rgba(255,255,255,0.06); border: 1px solid rgba(200, 151, 58, 0.2); outline: none; transition: border-color 0.3s, background 0.3s; line-height: 1.6; }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder { color: rgba(245, 242, 237, 0.25); }
+        .contact-form input:focus,
+        .contact-form textarea:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+        .contact-form textarea { min-height: 140px; resize: vertical; }
+        .contact-form .btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+        .contact-form .form-note { font-size: 0.78rem; color: rgba(245, 242, 237, 0.35); margin-top: 1rem; text-align: center; }
+        .contact-or { font-size: 0.82rem; color: rgba(245, 242, 237, 0.35); margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .contact-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 0; flex-wrap: wrap; }
         .contact-link { font-size: 0.82rem; font-weight: 500; color: rgba(245, 242, 237, 0.5); text-decoration: none; letter-spacing: 0.03em; transition: color 0.3s; display: flex; align-items: center; gap: 0.4rem; }
         .contact-link:hover { color: var(--paper); }
 
@@ -458,9 +471,25 @@
         <div class="section-label">Get Started</div>
         <div class="section-title">Ready to work on<br>your chess?</div>
         <div class="section-body">
-            <p>David coaches students of all levels online via Google Meet. Drop him a message on Twitter to chat — no commitment, no pressure. He's happy to talk about your goals before you book anything. Bulk lessons are available at a lower per-lesson rate.</p>
+            <p>David coaches students of all levels online via Google Meet. Send him a message — no commitment, no pressure. He's happy to talk about your goals before you book anything.</p>
         </div>
-        <a href="https://x.com/mencikdavid" class="btn" target="_blank">Message David on 𝕏 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" /></svg></a>
+        <form class="contact-form fade-in" action="https://formspree.io/f/xojnwopn" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell David a bit about yourself and what you're looking for..." required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg></button>
+            <p class="form-note">David typically replies within a day or two.</p>
+        </form>
+        <div class="contact-or">or find David elsewhere</div>
         <div class="contact-links">
             <a href="https://x.com/mencikdavid" class="contact-link" target="_blank">𝕏 @mencikdavid</a>
             <a href="https://ratings.fide.com/profile/955507" class="contact-link" target="_blank">FIDE Profile</a>
